@@ -5,15 +5,14 @@ namespace HurricaneVRExtensions.Simulator
 {
     public class HVRHexabodySimulator : HVRBodySimulator
     {
-        //Hexabody dependencies
-        private HVRHexaBodyInputs _hexabodyInputs;
-        private HexaBodyPlayer4 _hexabodyPlayer4;
+        [Header("Hexabody Rig dependencies (Don't assign if 'autoResolveDependencies' is enabled)")]
+        [SerializeField] private HVRHexaBodyInputs _hexabodyInputs;
+        [SerializeField] private HexaBodyPlayer4 _hexabodyPlayer4;
 
         protected override void Start()
         {
             if (!ResolveDependencies())
             {
-                Debug.Log("Auto resolve dependencies failed: The Rig parameter must be assigned with the Hurricane/Hexabody rig root object.", gameObject);
                 enabled = false;
                 return;
             }
@@ -38,6 +37,12 @@ namespace HurricaneVRExtensions.Simulator
         {
             if (!autoResolveDependencies)
                 return true;
+
+            if (Rig == null)
+            {
+                Debug.LogError("HVRHexabodySimulator error: Assign the “rig” component in the editor to continue.", gameObject);
+                return false;
+            }
 
             _hexabodyPlayer4 = Rig.GetComponentInChildren<HexaBodyPlayer4>();
             _hexabodyInputs = Rig.GetComponentInChildren<HVRHexaBodyInputs>();

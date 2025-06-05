@@ -20,9 +20,9 @@ namespace HurricaneVRExtensions.Simulator
         [SerializeField]
         protected float turnSpeed = 0.1f;
 
-        //Hurricane dependencies
-        private HVRPlayerController _hurricanePlayerController;
-        private HVRPlayerInputs _hurricanePlayerInputs;
+        [Header("Hurricane Rig dependencies (Don't assign if 'autoResolveDependencies' is enabled or using Hexabody)")]
+        [SerializeField] private HVRPlayerController _hurricanePlayerController;
+        [SerializeField] private HVRPlayerInputs _hurricanePlayerInputs;
 
         protected bool isTurning = false;
 
@@ -40,7 +40,6 @@ namespace HurricaneVRExtensions.Simulator
         {
             if (!ResolveDependencies())
             {
-                Debug.Log("Auto resolve dependencies failed: The Rig parameter must be assigned with the Hurricane/Hexabody rig root object.", gameObject);
                 enabled = false;
                 return;
             }
@@ -87,6 +86,12 @@ namespace HurricaneVRExtensions.Simulator
         {
             if (!autoResolveDependencies)
                 return true;
+
+            if (Rig == null)
+            {
+                Debug.LogError("HVRBodySimulator error: Assign the “Rig” component in the editor to continue.", gameObject);
+                return false;
+            }
 
             _hurricanePlayerController = Rig.GetComponentInChildren<HVRPlayerController>();
             _hurricanePlayerInputs = Rig.GetComponentInChildren<HVRPlayerInputs>();

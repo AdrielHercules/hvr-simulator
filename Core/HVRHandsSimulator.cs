@@ -85,15 +85,15 @@ namespace HurricaneVRExtensions.Simulator
         [SerializeField] private bool _showHandForwardAxis;
         [SerializeField] private bool _showTrackedControllerPosition;
 
-        //Dependencies
-        private Transform _controllerTargetLeft;
-        private Transform _controllerTargetRight;
-        private Camera _camera;
+        [Header("HVRHands dependencies (Don't assign if 'autoResolveDependencies' is enabled)")]
+        [SerializeField] private Transform _controllerTargetLeft;
+        [SerializeField] private Transform _controllerTargetRight;
+        [SerializeField] private Camera _camera;
 
-        [HideInInspector] public HVRHandGrabber HandGrabberLeft;
-        [HideInInspector] public HVRHandGrabber HandGrabberRight;
-        [HideInInspector] public HVRController ControllerLeft;
-        [HideInInspector] public HVRController ControllerRight;
+        public HVRHandGrabber HandGrabberLeft;
+        public HVRHandGrabber HandGrabberRight;
+        public HVRController ControllerLeft;
+        public HVRController ControllerRight;
 
         private void Start()
         {
@@ -341,6 +341,12 @@ namespace HurricaneVRExtensions.Simulator
         {
             if (!autoResolveDependencies)
                 return true;
+
+            if (Rig == null)
+            {
+                Debug.LogError("HVRHandsSimulator error: Assign the “rig” component in the editor to continue.", gameObject);
+                return false;
+            }
 
             HVRTrackedController[] trackedControllers = Rig.GetComponentsInChildren<HVRTrackedController>();
 
