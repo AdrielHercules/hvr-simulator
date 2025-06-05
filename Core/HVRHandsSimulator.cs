@@ -50,7 +50,12 @@ namespace HurricaneVRExtensions.Simulator
         public bool SecondaryButtonStarted => Keyboard.current[SecondaryButtonKey].wasPressedThisFrame;
         public bool JoystickButtonStarted => Keyboard.current[JoystickButtonKey].wasPressedThisFrame;
         public Vector2 MouseDelta => Mouse.current.delta.ReadValue();
+
+#if UNITY_6000_0_OR_NEWER
+        public Vector2 MouseDeltaScroll => Mouse.current.scroll.ReadValue() * 100;
+#else
         public Vector2 MouseDeltaScroll => Mouse.current.scroll.ReadValue();
+#endif
 
 #elif ENABLE_LEGACY_INPUT_MANAGER
 		public KeyCode HandSlowdown = KeyCode.LeftShift;
@@ -388,7 +393,6 @@ namespace HurricaneVRExtensions.Simulator
 
             ControllerLeft = HVRInputManager.Instance.LeftController;
             ControllerRight = HVRInputManager.Instance.RightController;
-
             return true;
         }
 
